@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Mastery — 10 Books</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg: #080810;
+  --s1: #0e0e1a;
+  --s2: #141425;
+  --border: #252540;
+  --gold: #c9a84c;
+  --red: #c0392b;
+  --blue: #2980b9;
+  --green: #27ae60;
+  --purple: #8e44ad;
+  --orange: #d35400;
+  --teal: #16a085;
+  --text: #dcdcf0;
+  --muted: #6060a0;
+  --dim: #404070;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Crimson Pro',Georgia,serif; min-height:100vh; overflow-x:hidden; }
+body::after { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+.hdr { padding:26px 16px 18px; text-align:center; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#0c0c1e,var(--bg)); }
+.hdr-eye { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:4px; color:var(--gold); margin-bottom:6px; }
+.hdr-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(36px,10vw,60px); letter-spacing:6px; color:#fff; line-height:1; }
+.hdr-sub { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:2px; margin-top:5px; }
+.gold-orn { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:12px; }
+.gold-orn::before,.gold-orn::after { content:''; height:1px; width:36px; background:var(--gold); opacity:0.4; }
+.gold-orn span { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--gold); letter-spacing:3px; }
+
+.wisdom-bar { margin:12px 14px 0; padding:11px 13px; background:linear-gradient(135deg,#14100a,#0a100a); border:1px solid #2a2000; border-left:3px solid var(--gold); border-radius:8px; display:flex; gap:10px; }
+.wb-icon { font-size:17px; flex-shrink:0; margin-top:2px; }
+.wb-src { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+.wb-txt { font-size:14px; color:#c8b870; line-height:1.5; font-style:italic; }
+
+.nav { display:flex; overflow-x:auto; scrollbar-width:none; padding:12px 14px 0; gap:6px; }
+.nav::-webkit-scrollbar { display:none; }
+.nbtn { flex-shrink:0; padding:7px 14px; background:transparent; border:1px solid var(--border); border-radius:4px; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:1px; cursor:pointer; transition:all 0.2s; text-transform:uppercase; }
+.nbtn:hover:not(.active) { border-color:var(--dim); color:var(--text); }
+.nbtn.active { background:var(--gold); color:#000; border-color:var(--gold); font-weight:700; }
+
+.main { padding:14px; }
+.view { display:none; }
+.view.active { display:block; }
+
+.slabel { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+
+/* BOOKS */
+.bcard { background:var(--s1); border:1px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden; transition:border-color 0.2s; }
+.bcard:hover { border-color:var(--dim); }
+.bhdr { display:flex; align-items:center; gap:11px; padding:13px 14px; cursor:pointer; }
+.bspine { width:4px; height:38px; border-radius:2px; flex-shrink:0; }
+.bmeta { flex:1; }
+.btitle { font-family:'Bebas Neue',sans-serif; font-size:17px; letter-spacing:1.5px; color:#fff; line-height:1; }
+.bauthor { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:1px; margin-top:3px; }
+.btag { font-family:'JetBrains Mono',monospace; font-size:9px; padding:3px 8px; border-radius:3px; letter-spacing:1px; font-weight:700; text-transform:uppercase; }
+.barrow { font-size:13px; color:var(--muted); transition:transform 0.3s; margin-left:4px; }
+.bcard.open .barrow { transform:rotate(180deg); }
+.bbody { display:none; border-top:1px solid var(--border); }
+.bcard.open .bbody { display:block; }
+.bessence { padding:13px 14px; background:#0a0a14; font-size:15px; color:#a0a0c0; line-height:1.7; font-style:italic; border-bottom:1px solid var(--border); }
+.blaws { padding:13px 14px; }
+.litem { display:flex; gap:11px; padding:9px 0; border-bottom:1px solid #1a1a2a; align-items:flex-start; }
+.litem:last-child { border-bottom:none; }
+.lnum { font-family:'JetBrains Mono',monospace; font-size:11px; min-width:26px; padding-top:2px; }
+.lname { font-family:'Bebas Neue',sans-serif; font-size:15px; letter-spacing:1px; color:#e0e0ff; line-height:1.2; }
+.lapply { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-top:3px; line-height:1.5; }
+.bfoot { padding:11px 14px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.bfoot-lbl { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); }
+.mtoggle { padding:6px 13px; border-radius:4px; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:1px; cursor:pointer; transition:all 0.2s; }
+.mtoggle.done { background:#061a06; border-color:var(--green); color:var(--green); }
+
+/* FINDER */
+.finder-intro { background:var(--s1); border:1px solid var(--border); border-radius:8px; padding:13px; font-size:14px; color:var(--muted); line-height:1.6; margin-bottom:13px; }
+.finder-intro strong { color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:11px; }
+.chips { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; }
+.chip { padding:7px 12px; border:1px solid var(--border); border-radius:20px; background:transparent; color:var(--muted); font-family:'JetBrains Mono',monospace; font-size:10px; cursor:pointer; transition:all 0.2s; }
+.chip.on { background:#1c1400; border-color:var(--gold); color:var(--gold); }
+.rgroup { background:var(--s1); border:1px solid var(--border); border-radius:10px; padding:13px 14px; margin-bottom:10px; animation:fu 0.3s ease; }
+@keyframes fu { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.rbook { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; margin-bottom:9px; }
+.rtactic { padding:8px 0; border-bottom:1px solid #1a1a28; }
+.rtactic:last-child { border-bottom:none; }
+.rtname { font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:1px; color:#fff; }
+.rthow { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-top:3px; line-height:1.5; }
+
+/* QUIZ */
+.qinfo { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; margin-bottom:12px; }
+.qcard { background:var(--s1); border:1px solid var(--border); border-radius:10px; padding:15px; margin-bottom:12px; }
+.qsrc { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:7px; }
+.qtxt { font-size:15px; font-weight:600; color:var(--text); line-height:1.5; margin-bottom:11px; }
+.qopts { display:flex; flex-direction:column; gap:7px; }
+.qopt { padding:10px 13px; background:transparent; border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:'Crimson Pro',serif; font-size:14px; text-align:left; cursor:pointer; transition:all 0.2s; line-height:1.4; }
+.qopt:hover:not(:disabled) { border-color:var(--gold); color:var(--gold); }
+.qopt.correct { background:#061a06; border-color:var(--green); color:#7ddc7d; }
+.qopt.wrong { background:#1a0606; border-color:var(--red); color:#dc7d7d; }
+.qfb { display:none; margin-top:9px; padding:10px 12px; border-radius:6px; font-size:13px; line-height:1.5; }
+.qfb.show { display:block; }
+.qfb.ok { background:#061a06; border:1px solid #1e4a1e; color:#7ddc7d; }
+.qfb.no { background:#1a0606; border:1px solid #4a1e1e; color:#dc7d7d; }
+
+/* PROGRESS */
+.pstats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
+.pstat { background:var(--s1); border:1px solid var(--border); border-radius:8px; padding:13px 10px; text-align:center; }
+.psn { font-family:'Bebas Neue',sans-serif; font-size:34px; color:var(--gold); line-height:1; }
+.psl { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--muted); margin-top:3px; letter-spacing:1px; text-transform:uppercase; }
+.plist { display:flex; flex-direction:column; gap:8px; }
+.prow { display:flex; align-items:center; gap:10px; background:var(--s1); border:1px solid var(--border); border-radius:8px; padding:10px 13px; }
+.pdot { width:8px; height:8px; border-radius:50%; background:var(--border); flex-shrink:0; }
+.pdot.done { background:var(--green); }
+.pname { flex:1; font-size:14px; }
+.pst { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); }
+.pst.d { color:var(--green); }
+.rbtn { margin-top:13px; width:100%; padding:10px; border:1px solid #4a1010; border-radius:6px; background:transparent; color:#e05050; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:1px; cursor:pointer; transition:all 0.2s; }
+.rbtn:hover { background:#1a0808; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-eye">10 Books • Distilled Wisdom</div>
+  <div class="hdr-title">DARK MASTERY</div>
+  <div class="hdr-sub">Power • Influence • Human Nature • Defense</div>
+  <div class="gold-orn"><span>◆</span></div>
+</div>
+
+<div class="wisdom-bar">
+  <div class="wb-icon">📖</div>
+  <div>
+    <div class="wb-src" id="wbSrc"></div>
+    <div class="wb-txt" id="wbTxt"></div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nbtn active" onclick="sv('books',this)">📚 Books</button>
+  <button class="nbtn" onclick="sv('finder',this)">🎯 Finder</button>
+  <button class="nbtn" onclick="sv('quiz',this)">🧠 Quiz</button>
+  <button class="nbtn" onclick="sv('progress',this)">📈 Progress</button>
+</div>
+
+<div class="main">
+
+<div class="view active" id="books">
+  <div class="slabel">10 Books — Tap to expand</div>
+  <div id="shelf"></div>
+</div>
+
+<div class="view" id="finder">
+  <div class="finder-intro"><strong>Situation batao →</strong> Main bataunga kaun si book ka kaun sa weapon use karna hai — abhi, is waqt.</div>
+  <div class="slabel">Tumhari situation select karo:</div>
+  <div class="chips" id="chips"></div>
+  <div id="fout"></div>
+</div>
+
+<div class="view" id="quiz">
+  <div class="qinfo">Saari 10 books se • Scenario-based questions</div>
+  <div id="qlist"></div>
+</div>
+
+<div class="view" id="progress">
+  <div class="pstats">
+    <div class="pstat"><div class="psn" id="pn1">0</div><div class="psl">Books Done</div></div>
+    <div class="pstat"><div class="psn" id="pn2">0</div><div class="psl">Quiz Score</div></div>
+    <div class="pstat"><div class="psn" id="pn3">10</div><div class="psl">Total</div></div>
+  </div>
+  <div class="slabel">Book Progress</div>
+  <div class="plist" id="plist"></div>
+  <button class="rbtn" onclick="doReset()">Reset All Progress</button>
+</div>
+
+</div>
+
+<script>
+const BOOKS = [
+  {
+    id:'b1', title:'48 Laws of Power', author:'Robert Greene',
+    color:'#c9a84c', tagBg:'#1c1400', tag:'POWER',
+    essence:'Power ka ek hi niyam hai — hamesha in control dikhna. Jo weak lagta hai wo attack ka target banta hai. Jo powerful lagta hai wo bina maange respect pata hai.',
+    laws:[
+      {n:'01', name:'Never Outshine the Master', apply:'Senior ko publicly kabhi embarrass mat karo. Unhe shine karo — peeche se control tumhare paas rahega.'},
+      {n:'03', name:'Conceal Your Intentions', apply:'Kabhi seedha mat batao kya chahiye. Alag direction dikhao — real move tab karo.'},
+      {n:'04', name:'Always Say Less Than Necessary', apply:'Jitna kam bologe utna mysterious lagoge. Silence ek power signal hai.'},
+      {n:'06', name:'Court Attention at All Costs', apply:'Worst cheez hai ignored rehna. Controversial bhi theek hai — neutral rehna nahi.'},
+      {n:'11', name:'Make Others Dependent on You', apply:'Aise kaam karo jo sirf tum kar sako. Replaceable mat bano kabhi.'},
+      {n:'16', name:'Use Absence to Increase Respect', apply:'Hamesha available rehne se value girti hai. Disappear karo — demand create hoti hai.'},
+      {n:'33', name:'Discover Each Man\'s Thumbscrew', apply:'Har insaan ki ek weakness hoti hai. Dhundho — usse leverage ki jagah pe rakho.'},
+      {n:'48', name:'Assume Formlessness', apply:'Fixed strategy = predictable target. Fluid raho. Enemy ka pattern dekho, apna chhupaao.'},
+    ]
+  },
+  {
+    id:'b2', title:'The Laws of Human Nature', author:'Robert Greene',
+    color:'#8e44ad', tagBg:'#1a0a2a', tag:'NATURE',
+    essence:'Har insaan ek pattern mein jeeta hai jo usse khud nahi pata. Yeh patterns dekhna seekho — tab tum kisi ko bhi predict kar sakte ho, use kar sakte ho, ya usse defend ho sakte ho.',
+    laws:[
+      {n:'①', name:'Master Your Emotional Self', apply:'Jo emotions se react karta hai wo hamesha haarta hai. Observe karo — react mat karo.'},
+      {n:'②', name:'See Through People\'s Masks', apply:'Log jo dikhate hain wo act hai. Contradictions dhundho — wahan sach hota hai.'},
+      {n:'③', name:'Soften Resistance', apply:'Direct push karo toh pushback milta hai. Indirect approach lo — unhe lagao ki yeh unka khud ka idea hai.'},
+      {n:'④', name:'Elevate Your Perspective', apply:'Short-term thinking ek trap hai. Har cheez ko 5 saal baad ki nazar se dekho.'},
+      {n:'⑤', name:'Become an Elusive Object of Desire', apply:'Jo easily milta hai wo desired nahi hota. Mystery + absence = desire.'},
+      {n:'⑥', name:'Read Character Early', apply:'Crisis mein character reveal hota hai. Chhoti tests se pehle bada trust mat do.'},
+    ]
+  },
+  {
+    id:'b3', title:'The Art of Seduction', author:'Robert Greene',
+    color:'#e74c3c', tagBg:'#1a0808', tag:'SEDUCTION',
+    essence:'Seduction sirf romance nahi — yeh har relationship mein hoti hai. Jo desire create karta hai uske paas control hota hai. Log jo chahte hain usse thoda thoda do — taaki wo aur maangein.',
+    laws:[
+      {n:'▶', name:'Create Mystery', apply:'Sab kuch kabhi mat batao. 70% reveal karo, 30% hidden rakho. Log gap khud fill karte hain.'},
+      {n:'▶', name:'Send Mixed Signals', apply:'Hamesha warm mat raho. Kabhi cold, kabhi warm — log tumhare attention ke liye try karne lagte hain.'},
+      {n:'▶', name:'Master Insinuation', apply:'Seedha mat bolo. Suggest karo, imply karo — unhe khud result pe pahunchne do.'},
+      {n:'▶', name:'Prove Yourself with Action', apply:'Bolne se zyada powerful hai dikhana. Ek dramatic action 100 words se behtar hota hai.'},
+      {n:'▶', name:'Create Absence', apply:'Jo hamesha available ho uski value zero. Disappear karo — importance wapas aati hai.'},
+    ]
+  },
+  {
+    id:'b4', title:'Dark Psychology 101', author:'Michael Pace',
+    color:'#7f8c8d', tagBg:'#0e1012', tag:'DARK OPS',
+    essence:'Dark psychology wo tactics hain jo log intentionally ya unintentionally use karte hain dusron ko control karne ke liye. Inhe jaanna defense ke liye zaroori hai — aur application ke liye bhi.',
+    laws:[
+      {n:'◈', name:'Gaslighting', apply:'Koi tumhari reality pe doubt karwaye — yeh gaslighting hai. Counter: facts record karo, apne perception pe trust karo.'},
+      {n:'◈', name:'Love Bombing', apply:'Sudden excessive attention = manipulation setup. Guard down hone se pehle pause lo.'},
+      {n:'◈', name:'DARVO', apply:'Deny, Attack, Reverse Victim & Offender — jab koi blame shift kare aur khud victim bane — yeh DARVO hai.'},
+      {n:'◈', name:'Intermittent Reinforcement', apply:'Kabhi reward, kabhi punishment — randomly. Yeh sab se addictive control method hai. Casinos issi pe chalte hain.'},
+      {n:'◈', name:'Silent Treatment as Weapon', apply:'Jo silence torture ki tarah use kare wo mature nahi, manipulative hai.'},
+    ]
+  },
+  {
+    id:'b5', title:'The Psychopath Test', author:'Jon Ronson',
+    color:'#16a085', tagBg:'#061414', tag:'PROFILING',
+    essence:'Psychopathy ek spectrum hai. Corporate leaders mein psychopathic traits average se 4x zyada hote hain. Inhe identify karna survival skill hai.',
+    laws:[
+      {n:'◆', name:'Superficial Charm Signal', apply:'Bahut zyada smooth, bahut jaldi likeable — alarm. Real warmth time ke saath aata hai.'},
+      {n:'◆', name:'Grandiosity', apply:'Jo soche rules unpe apply nahi hote — yeh entitlement ek psychopathic trait hai.'},
+      {n:'◆', name:'Pathological Lying', apply:'Stories mein inconsistencies dhundho. Ek lie — mistake. Do teen — pattern.'},
+      {n:'◆', name:'No Remorse', apply:'Consequences se darana alag hai genuinely sorry hone se. "Sorry" = tactic, not emotion.'},
+      {n:'◆', name:'Cold Empathy', apply:'Yeh emotionally feel nahi karte but intellectually samajhte hain kya hurt karega. Yeh unka weapon hai.'},
+    ]
+  },
+  {
+    id:'b6', title:'The Sociopath Next Door', author:'Martha Stout',
+    color:'#d35400', tagBg:'#1a0a00', tag:'AWARENESS',
+    essence:'4% log sociopathic traits rakhte hain — matlab tumhare classroom ya workplace mein koi ho sakta hai. Yeh ordinary dikhte hain — isliye pehchanna zaroori hai.',
+    laws:[
+      {n:'●', name:'The Pity Play', apply:'Jo baar baar pity maange — especially apni galti ke baad — wo manipulate kar raha hai. Pity = disarm tactic.'},
+      {n:'●', name:'No Loyalty, Only Strategy', apply:'Sociopath ka koi real bond nahi. Jo useful hai rakhte hain — baaki discard. Dekho: kaun easily discard ho jaata hai unke liye.'},
+      {n:'●', name:'Rule of Threes', apply:'Ek lie — mistake. Do — coincidence. Teen — pattern. Yeh sign hai: distance banao.'},
+      {n:'●', name:'Do Not Try to Rehabilitate', apply:'Inhe badalna possible nahi. Best response: graceful exit. Engage mat karo — unka game hai.'},
+      {n:'●', name:'Conscience is Your Strength', apply:'Tumhara conscience tumhari power hai. Inke paas nahi — isliye yeh long-term lose karte hain.'},
+    ]
+  },
+  {
+    id:'b7', title:'In Sheep\'s Clothing', author:'George K. Simon',
+    color:'#27ae60', tagBg:'#061a0a', tag:'DEFENSE',
+    essence:'Covert aggression — jab koi tumhe hurt kare aur innocent bana rahe. Sab se dangerous kyunki tum confused rehte ho ki kuch hua bhi ya nahi.',
+    laws:[
+      {n:'■', name:'Minimization', apply:'"Itni chhoti baat pe itna drama?" — tumhare feelings invalidate ho rahe hain. Name the tactic out loud.'},
+      {n:'■', name:'Diversion', apply:'Confrontation pe topic change karna — direct answer kabhi nahi dena. Yeh avoidance hai, honesty nahi.'},
+      {n:'■', name:'Covert Intimidation', apply:'Explicit threats nahi — "pata nahi kya ho jaaye" type hints. Yeh veiled intimidation hai.'},
+      {n:'■', name:'Playing the Victim', apply:'Aggressor khud victim ban jaaye — isliye tumhara conscience activate ho. Classic covert tactic.'},
+      {n:'■', name:'Behavior Over Words', apply:'Explanations ignore karo — behavior dekho. Actions = truth. Words = noise.'},
+    ]
+  },
+  {
+    id:'b8', title:'Snakes in Suits', author:'Hare & Babiak',
+    color:'#2980b9', tagBg:'#060e1a', tag:'CORPORATE',
+    essence:'Corporate world mein psychopaths thrive karte hain. Charisma + ruthlessness + no guilt = fast promotion. Yeh book batati hai inhe kaise spot karo aur khud ko kaise bachao.',
+    laws:[
+      {n:'▲', name:'Assessment Phase', apply:'Pehle wo tumhe study karte hain — needs, fears, weaknesses. Charm offensive hai, genuine interest nahi.'},
+      {n:'▲', name:'Manipulation Phase', apply:'Phir tumhara use hota hai — projects, credit, access. Tum tool ban chuke hote ho bina jaane.'},
+      {n:'▲', name:'Abandonment Phase', apply:'Kaam ho gaya — discard. Sudden coldness. Agar yeh hua hai tumhare saath — not your fault, it was planned.'},
+      {n:'▲', name:'Documentation Defense', apply:'Aise log ke saath sab email mein karo. Verbal promises inke liye worthless hain — aur tumhare liye bhi.'},
+      {n:'▲', name:'Charm Radar', apply:'Bahut jaldi bahut perfect — slow down. Professional context mein excessive charm = red flag.'},
+    ]
+  },
+  {
+    id:'b9', title:'Influence: Psychology of Persuasion', author:'Robert Cialdini',
+    color:'#f39c12', tagBg:'#1a1000', tag:'INFLUENCE',
+    essence:'6 weapons of influence jo har marketer, politician, aur manipulator use karta hai. Inhe jaano — phir na tum pe kaam karein, na tum inhe effectively use kar sako.',
+    laws:[
+      {n:'①', name:'Reciprocity', apply:'Pehle do — phir maango. Jo kuch deta hai usse haan bolna psychologically difficult hota hai.'},
+      {n:'②', name:'Commitment & Consistency', apply:'Ek baar haan bolne ke baad consistent rehte hain log. Foot-in-door technique issi pe hai.'},
+      {n:'③', name:'Social Proof', apply:'"Sabhi kar rahe hain" — sabse powerful persuasion trigger. Perception manage karo.'},
+      {n:'④', name:'Authority', apply:'Expert ki baat bina check kiye maan lete hain. Title, degree, dress — sab shortcuts to compliance.'},
+      {n:'⑤', name:'Liking', apply:'Jisko like karte ho uski baat maante ho. Mirror karo, common ground dhundho.'},
+      {n:'⑥', name:'Scarcity', apply:'"Limited offer" — jo mushkil se mile wo valuable lagta hai. Artificial scarcity = real desire.'},
+    ]
+  },
+  {
+    id:'b10', title:'The 33 Strategies of War', author:'Robert Greene',
+    color:'#c0392b', tagBg:'#140606', tag:'WAR',
+    essence:'Zindagi ek constant conflict hai. Jo war ki tarah nahi sochta wo hamesha reactive hota hai. Position, morale, deception aur timing — in sab se har conflict mein edge milta hai.',
+    laws:[
+      {n:'I', name:'Declare War on Your Enemies', apply:'Enemy clearly define karo. Vague enemy = scattered energy = defeat.'},
+      {n:'II', name:'Do Not Fight the Last War', apply:'Jo pehle kaam kiya ussi strategy pe mat ruko. Har battle naya hai.'},
+      {n:'III', name:'Find Calm in Turmoil', apply:'Crisis mein jo calm hai wo lead karta hai. Panic = control loss. Practice stillness under pressure.'},
+      {n:'IV', name:'Create a Threatening Presence', apply:'Jo dangerous lagta hai usse disturb nahi karte. Unpredictable reputation = protection.'},
+      {n:'VI', name:'Divide and Conquer', apply:'Bade enemy ko ek saath mat lo. Parts mein todo — ek ek karke.'},
+      {n:'VIII', name:'Target the Center of Gravity', apply:'Har enemy ki ek main pillar hoti hai. Usse giraao — baaki sab khud gir jaayega.'},
+    ]
+  },
+];
+
+const SITS = [
+  {label:'Koi ignore kar raha hai', t:[
+    {book:'48 Laws of Power',color:'#c9a84c',name:'Law of Absence',how:'Tum bhi suddenly disappear ho jaao. Absence = tumhari presence feel karagayi.'},
+    {book:'Art of Seduction',color:'#e74c3c',name:'Mixed Signals',how:'Kabhi warm kabhi cold. Predictable mat bano — curiosity create hogi.'},
+    {book:'Influence',color:'#f39c12',name:'Scarcity Trigger',how:'Apni availability drastically kam karo. Jo rare lage wo desired lagta hai.'},
+  ]},
+  {label:'Kisi par influence banana hai', t:[
+    {book:'Influence',color:'#f39c12',name:'Reciprocity',how:'Pehle kuch do bina maange. Psychological obligation create hota hai.'},
+    {book:'Laws of Human Nature',color:'#8e44ad',name:'Their Idea Technique',how:'Apna idea unka idea bana do. Direct push = resistance.'},
+    {book:'Art of Seduction',color:'#e74c3c',name:'Insinuation',how:'Suggest karo, direct mat bolo. Unhe khud conclusion pe pahunchne do.'},
+  ]},
+  {label:'Koi mujhe manipulate kar raha hai', t:[
+    {book:'In Sheep\'s Clothing',color:'#27ae60',name:'Name the Tactic',how:'Out loud bol do kya ho raha hai. Manipulation light mein survive nahi karta.'},
+    {book:'Dark Psychology 101',color:'#7f8c8d',name:'DARVO Detect',how:'Agar blame shift ho aur wo khud victim bane — DARVO hai. Engage mat karo.'},
+    {book:'Sociopath Next Door',color:'#d35400',name:'Rule of Threes',how:'Teen lies ya broken promises — exit. Rehabilitate karne ki koshish mat karo.'},
+  ]},
+  {label:'Power struggle mein hoon', t:[
+    {book:'48 Laws of Power',color:'#c9a84c',name:'Frame Control',how:'Conversation ka context set karo. Jo frame set karta hai wo jeetता hai.'},
+    {book:'33 Strategies',color:'#c0392b',name:'Center of Gravity',how:'Opponent ki main strength identify karo aur usse target karo.'},
+    {book:'48 Laws of Power',color:'#c9a84c',name:'Strategic Silence',how:'5 sec chup raho. Discomfort unka hoga — jo zyada bolta hai wo haarta hai.'},
+  ]},
+  {label:'Trust banana hai naye jagah', t:[
+    {book:'Influence',color:'#f39c12',name:'Liking + Mirroring',how:'Unhe mirror karo — tone, body language. Jaise lagoge waisa trust milega.'},
+    {book:'Art of Seduction',color:'#e74c3c',name:'Strategic Vulnerability',how:'Ek chhoti already-overcome weakness share karo. Instantly relatable lagte ho.'},
+    {book:'Laws of Human Nature',color:'#8e44ad',name:'Deep Listening',how:'Pehle sirf suno. Opinions mat do. Observer bano — patterns khud clear ho jaayenge.'},
+  ]},
+  {label:'Koi dangerous insaan mila hai', t:[
+    {book:'Psychopath Test',color:'#16a085',name:'3 Warning Signs',how:'Charm + grandiosity + no remorse = teen signs = distance banao immediately.'},
+    {book:'Snakes in Suits',color:'#2980b9',name:'Documentation',how:'Sab written mein karo. Verbal promises worthless hain inke saath.'},
+    {book:'Sociopath Next Door',color:'#d35400',name:'Exit Strategy',how:'Inhe badalna impossible hai. Graceful exit lo. Engage karna unka game hai.'},
+  ]},
+  {label:'Argument ya confrontation mein hoon', t:[
+    {book:'33 Strategies',color:'#c0392b',name:'Calm in Turmoil',how:'Voice slow karo, softer karo. Jo calm rehta hai wo control karta hai.'},
+    {book:'In Sheep\'s Clothing',color:'#27ae60',name:'Behavior Over Words',how:'Unki explanations ignore karo — behavior dekho. Actions = truth.'},
+    {book:'48 Laws of Power',color:'#c9a84c',name:'Conceal Intentions',how:'Apna actual goal hide karo. Alag direction dikhao. Opponent distract hoga.'},
+  ]},
+  {label:'Apni value badhani hai', t:[
+    {book:'48 Laws of Power',color:'#c9a84c',name:'Build Reputation First',how:'Solid reputation banao. Log tumse directly nahi larte jab image strong ho.'},
+    {book:'Laws of Human Nature',color:'#8e44ad',name:'Become Elusive',how:'Mystery + absence = desire. Hamesha available = zero value.'},
+    {book:'Influence',color:'#f39c12',name:'Authority Signal',how:'Expert ki tarah dikhna = expert mana jaana. Appearance + references sab matter karta hai.'},
+  ]},
+  {label:'Kisi ko bade kaam ke liye manana hai', t:[
+    {book:'Influence',color:'#f39c12',name:'Commitment Ladder',how:'Pehle chota haan lo. Phir bada. Consistency bias kaam karta hai.'},
+    {book:'Laws of Human Nature',color:'#8e44ad',name:'Plant the Seed',how:'Idea unka idea bana do. Wo khud usse nurture karein.'},
+    {book:'Art of Seduction',color:'#e74c3c',name:'Dramatic Proof',how:'Ek bold action 100 convincing words se behtar hai. Show karo — bolo mat.'},
+  ]},
+  {label:'Office/school politics samajhni hai', t:[
+    {book:'Snakes in Suits',color:'#2980b9',name:'Spot the Phases',how:'Assessment → Manipulation → Abandonment. Bahut jaldi bahut sweet = alarm.'},
+    {book:'48 Laws of Power',color:'#c9a84c',name:'Make Yourself Needed',how:'Aise kaam karo jo sirf tum kar sako. Irreplaceable bano.'},
+    {book:'33 Strategies',color:'#c0392b',name:'Moral High Ground',how:'Jo morally superior dikhe uske supporters naturally zyada hote hain. Optics manage karo.'},
+  ]},
+];
+
+const QS = [
+  {src:'48 Laws of Power', q:'Tumhara senior tumhari kisi achievement se uncomfortable lag raha hai. Sahi move kya hai?', opts:['Apni achievement aur zyada explain karo','Achievement ko unke contribution se link karo, khud step back karo','Bilkul chup raho','Doston ko batao apni achievement'], c:1, fb:'Law 1: Never Outshine the Master. Unhe credit share karo — peeche se control tumhare haath mein rahega.'},
+  {src:'Influence', q:'Tum chahte ho koi tumhara bada favor kare. Pehla step kya hona chahiye?', opts:['Seedha badi request karo','Social proof batao','Pehle unhe koi chhoti cheez do bina maange','Authority signal dikhao'], c:2, fb:'Reciprocity! Pehle do — obligation create hota hai. Phir maango — refusal psychologically mushkil ho jaata hai.'},
+  {src:'In Sheep\'s Clothing', q:'Koi confrontation pe topic change kar deta hai. Yeh kya tactic hai?', opts:['Selective inattention','Diversion','Minimization','DARVO'], c:1, fb:'Diversion — confronted hone pe topic change karna. Name karo out loud: "Yeh topic change hai, main original baat pe wapas aana chahta hoon."'},
+  {src:'Laws of Human Nature', q:'Nayi environment mein influence banana hai. Pehle 2 hafte mein best strategy?', opts:['Apni achievements share karo','Sirf suno, observe karo, opinions mat do','Leader se turant dosti karo','Controversial opinion do'], c:1, fb:'Deep Listening. Jo sunta hai wo sab patterns dekh leta hai. 2 hafte mein tumhe sab pata hoga — unhe tumhare baare mein kuch nahi.'},
+  {src:'Psychopath Test + Snakes in Suits', q:'Koi insaan bahut jaldi bahut charming hai, baar baar promises kar raha hai. Kya karo?', opts:['Dost bana lo — rare hote hain aise log','Slow down — charm + fast promises = red flag','Unhe test karo','Ignore karo'], c:1, fb:'Assessment Phase detect karo. Excessive charm + instant promises = tum target ho sakte ho. Slow down karo, document karo.'},
+  {src:'33 Strategies of War', q:'Group argument mein ho, sab heated hain. Tumhara best move?', opts:['Loudly apni position defend karo','Chup raho aur calm raho — voice slow karo','Pehle alliance banao','Kisi ek ko blame karo'], c:1, fb:'Calm in Turmoil. Jo calm rehta hai wo control karta hai. Slow voice + stillness = natural authority. Baaki sab reactive lagte hain.'},
+  {src:'Dark Psychology 101', q:'Koi tumhe baar baar pity maang raha hai, especially apni galti ke baad. Yeh kya hai?', opts:['Genuine remorse','Pity Play — manipulation tactic','Emotional sensitivity','Trauma response'], c:1, fb:'Pity Play. Pity maangna = tumhara conscience disarm karna. Jo genuinely sorry hota hai wo apna behavior change karta hai, pity nahi maangta.'},
+  {src:'Art of Seduction', q:'Koi tumhe taken for granted le raha hai. Seduction principle kya kehta hai?', opts:['Unke liye aur zyada karo','Ek baat seedha bol do','Suddenly distance banao, less available ho jaao','Kisi aur pe dhyan do saamne inke'], c:2, fb:'Absence + Scarcity. Jo hamesha available ho uski value zero. Suddenly disappear karo — tumhari importance wapas aayegi.'},
+];
+
+let learned = JSON.parse(localStorage.getItem('dm_l') || '[]');
+let qsc = JSON.parse(localStorage.getItem('dm_q') || '[]');
+let selSits = [];
+
+// Wisdom
+const wisdoms = [
+  {src:'48 Laws of Power', txt:'Jo zyada bolta hai wo zyada attack hota hai. Silence ek shield bhi hai, weapon bhi.'},
+  {src:'Laws of Human Nature', txt:'Log jo dikhate hain wo act hai. Contradictions mein sach chhupta hai.'},
+  {src:'Influence', txt:'Har haan ke peeche ek psychological trigger hai. Trigger dhundho, haan milegi.'},
+  {src:'33 Strategies', txt:'Har enemy ki ek main pillar hoti hai. Usse giraao — baaki sab khud gir jaayega.'},
+  {src:'Art of Seduction', txt:'Jo easily milta hai wo desired nahi hota. Mystery create karo — desire follow karta hai.'},
+  {src:'In Sheep\'s Clothing', txt:'Behavior dekho, words nahi. Actions truth hain, explanations noise.'},
+  {src:'Snakes in Suits', txt:'Bahut jaldi bahut perfect lagna — red flag hai, green flag nahi.'},
+];
+const w = wisdoms[new Date().getDay() % wisdoms.length];
+document.getElementById('wbSrc').textContent = w.src;
+document.getElementById('wbTxt').textContent = w.txt;
+
+// Render Books
+function rBooks() {
+  document.getElementById('shelf').innerHTML = BOOKS.map(b => `
+    <div class="bcard" id="bc${b.id}">
+      <div class="bhdr" onclick="tBook('${b.id}')">
+        <div class="bspine" style="background:${b.color}"></div>
+        <div class="bmeta">
+          <div class="btitle">${b.title}</div>
+          <div class="bauthor">${b.author}</div>
+        </div>
+        <span class="btag" style="background:${b.tagBg};color:${b.color}">${b.tag}</span>
+        <span class="barrow" style="color:${b.color}">▾</span>
+      </div>
+      <div class="bbody">
+        <div class="bessence">${b.essence}</div>
+        <div class="blaws">${b.laws.map(l=>`
+          <div class="litem">
+            <div class="lnum" style="color:${b.color}">${l.n}</div>
+            <div>
+              <div class="lname">${l.name}</div>
+              <div class="lapply">${l.apply}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+        <div class="bfoot">
+          <span class="bfoot-lbl" style="color:${b.color}">${b.laws.length} Concepts</span>
+          <button class="mtoggle ${learned.includes(b.id)?'done':''}" onclick="tLearned('${b.id}',this)">
+            ${learned.includes(b.id)?'✓ Completed':'○ Mark Done'}
+          </button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function tBook(id) { document.getElementById('bc'+id).classList.toggle('open'); }
+function tLearned(id, btn) {
+  if (learned.includes(id)) return;
+  learned.push(id);
+  localStorage.setItem('dm_l', JSON.stringify(learned));
+  btn.classList.add('done'); btn.textContent = '✓ Completed';
+  uProg();
+}
+
+// Render Finder
+function rFinder() {
+  document.getElementById('chips').innerHTML = SITS.map((s,i)=>`
+    <div class="chip" onclick="tSit(${i},this)">${s.label}</div>`).join('');
+}
+function tSit(i, el) {
+  el.classList.toggle('on');
+  selSits = selSits.includes(i) ? selSits.filter(x=>x!==i) : [...selSits,i];
+  rFOut();
+}
+function rFOut() {
+  const out = document.getElementById('fout');
+  if (!selSits.length) { out.innerHTML=''; return; }
+  const all = selSits.flatMap(i=>SITS[i].t);
+  const seen = new Set();
+  const uniq = all.filter(t=>{ const k=t.book+t.name; if(seen.has(k))return false; seen.add(k); return true; });
+  out.innerHTML = uniq.map(t=>`
+    <div class="rgroup">
+      <div class="rbook" style="color:${t.color}">${t.book}</div>
+      <div class="rtactic">
+        <div class="rtname">${t.name}</div>
+        <div class="rthow">${t.how}</div>
+      </div>
+    </div>`).join('');
+}
+
+// Render Quiz
+function rQuiz() {
+  document.getElementById('qlist').innerHTML = QS.map((q,qi)=>`
+    <div class="qcard">
+      <div class="qsrc">${q.src}</div>
+      <div class="qtxt">Q${qi+1}. ${q.q}</div>
+      <div class="qopts">${q.opts.map((o,oi)=>`
+        <button class="qopt" id="qo${qi}_${oi}" onclick="ansQ(${qi},${oi})">${o}</button>`).join('')}
+      </div>
+      <div class="qfb" id="qfb${qi}"></div>
+    </div>`).join('');
+}
+function ansQ(qi, sel) {
+  const q = QS[qi];
+  q.opts.forEach((_,oi)=>{
+    const b=document.getElementById(`qo${qi}_${oi}`);
+    b.disabled=true;
+    if(oi===q.c) b.classList.add('correct');
+    if(oi===sel&&sel!==q.c) b.classList.add('wrong');
+  });
+  const fb=document.getElementById(`qfb${qi}`);
+  fb.classList.add('show');
+  if(sel===q.c){
+    fb.classList.add('ok'); fb.textContent='✓ Sahi! '+q.fb;
+    if(!qsc.includes(qi)){qsc.push(qi);localStorage.setItem('dm_q',JSON.stringify(qsc));uProg();}
+  } else {
+    fb.classList.add('no'); fb.textContent='✗ Galat. '+q.fb;
+  }
+}
+
+// Progress
+function uProg() {
+  document.getElementById('pn1').textContent = learned.length;
+  document.getElementById('pn2').textContent = `${qsc.length}/${QS.length}`;
+  document.getElementById('plist').innerHTML = BOOKS.map(b=>`
+    <div class="prow">
+      <div class="pdot ${learned.includes(b.id)?'done':''}"></div>
+      <div class="pname">${b.title}</div>
+      <div class="pst ${learned.includes(b.id)?'d':''}">${learned.includes(b.id)?'✓ Done':'Pending'}</div>
+    </div>`).join('');
+}
+function doReset() {
+  if(!confirm('Sab reset karna hai?')) return;
+  learned=[]; qsc=[];
+  localStorage.removeItem('dm_l'); localStorage.removeItem('dm_q');
+  rBooks(); rQuiz(); uProg();
+}
+
+function sv(id, btn) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+rBooks(); rFinder(); rQuiz(); uProg();
+</script>
+</body>
+</html>
